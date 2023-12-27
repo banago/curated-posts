@@ -1,6 +1,6 @@
 jQuery(document).ready(function($){
 
-    var $selectPost = $(".js-data-example-ajax");
+    var $selectPost = $("#js-curated-select");
     
     $selectPost.select2({
       ajax: {
@@ -32,7 +32,7 @@ jQuery(document).ready(function($){
       escapeMarkup: function (markup) { return markup; }, // let our custom formatter work
       minimumInputLength: 1,
       templateResult: formatPost, 
-      templateSelection: formatPostSelection 
+      templateSelection: formatPostSelection
     });
     
     function niceDate(raw) {    

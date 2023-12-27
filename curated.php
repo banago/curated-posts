@@ -8,7 +8,8 @@ Version: 1.0
 Author URI: http://wplancer.com/
 */
 
-if ( ! defined( 'ABSPATH' ) ) exit;
+if ( ! defined( 'ABSPATH' ) )
+	exit;
 
 class Curated_Posts {
 
@@ -28,6 +29,7 @@ class Curated_Posts {
 		add_action( 'save_post', array( $this, 'save_meta_boxes' ), 1, 2 );
 		add_filter( 'post_updated_messages', array( $this, 'post_updated_messages' ) );
 		add_filter( 'widget_text', array( $this, 'widget_text' ) );
+		add_filter( 'gettext', [ $this, 'update_excerpt_label' ], 10, 2 );
 	}
 
 	/**
@@ -35,24 +37,24 @@ class Curated_Posts {
 	 */
 	public function init() {
 
-  		// Define constants
+		// Define constants
 		$this->define_constants();
-		
+
 		// Set up localisation
 		$this->load_plugin_textdomain();
 	}
 
 	/**
 	 * Define constants
-	*/
+	 */
 	private function define_constants() {
-		if ( !defined( 'CURATED_POSTS_VERSION' ) )
+		if ( ! defined( 'CURATED_POSTS_VERSION' ) )
 			define( 'CURATED_POSTS_VERSION', '1.0' );
 
-		if ( !defined( 'CURATED_POSTS_URL' ) )
+		if ( ! defined( 'CURATED_POSTS_URL' ) )
 			define( 'CURATED_POSTS_URL', plugin_dir_url( __FILE__ ) );
 
-		if ( !defined( 'CURATED_POSTS_DIR' ) )
+		if ( ! defined( 'CURATED_POSTS_DIR' ) )
 			define( 'CURATED_POSTS_DIR', plugin_dir_path( __FILE__ ) );
 	}
 
@@ -86,29 +88,29 @@ class Curated_Posts {
 		register_post_type( 'curated_posts',
 			array(
 				'labels' => array(
-					'name' 					=> __( 'Curated Posts', 'curated' ),
-					'singular_name' 		=> __( 'Curated Post', 'curated' ),
-					'add_new_item' 			=> __( 'Add New Curated Posts', 'curated' ),
-					'edit_item' 			=> __( 'Edit Curated Posts', 'curated' ),
-					'new_item' 				=> __( 'New Curated Posts', 'curated' ),
-					'view_item' 			=> __( 'View Curated Posts', 'curated' ),
-					'search_items' 			=> __( 'Search Curated Posts', 'curated' ),
-					'not_found' 			=> __( 'No curated posts found.', 'curated' ),
-					'not_found_in_trash' 	=> __( 'No curated posts found in trash.', 'curated' ),
+					'name' => __( 'Curated Posts', 'curated' ),
+					'singular_name' => __( 'Curated Post', 'curated' ),
+					'add_new_item' => __( 'Add New Curated Posts', 'curated' ),
+					'edit_item' => __( 'Edit Curated Posts', 'curated' ),
+					'new_item' => __( 'New Curated Posts', 'curated' ),
+					'view_item' => __( 'View Curated Posts', 'curated' ),
+					'search_items' => __( 'Search Curated Posts', 'curated' ),
+					'not_found' => __( 'No curated posts found.', 'curated' ),
+					'not_found_in_trash' => __( 'No curated posts found in trash.', 'curated' ),
 				),
-				'public' 				=> false,
-				'show_ui' 				=> true,
-				'capability_type' 		=> 'post',
-				'map_meta_cap' 			=> true,
-				'publicly_queryable' 	=> false,
-				'exclude_from_search' 	=> true,
-				'hierarchical' 			=> false,
-				'rewrite' 				=> array( 'slug' => 'group' ),
-				'supports' 				=> array( 'title' ),
-				'has_archive' 			=> false,
-				'show_in_nav_menus' 	=> false,
-				'show_in_admin_bar' 	=> false,
-				'menu_icon' 			=> 'dashicons-thumbs-up',
+				'public' => false,
+				'show_ui' => true,
+				'capability_type' => 'post',
+				'map_meta_cap' => true,
+				'publicly_queryable' => false,
+				'exclude_from_search' => true,
+				'hierarchical' => false,
+				'rewrite' => array( 'slug' => 'group' ),
+				'supports' => array( 'title', 'excerpt' ),
+				'has_archive' => false,
+				'show_in_nav_menus' => false,
+				'show_in_admin_bar' => false,
+				'menu_icon' => 'dashicons-list-view',
 			)
 		);
 	}
@@ -126,12 +128,12 @@ class Curated_Posts {
 	public static function admin_scripts() {
 		$screen = get_current_screen();
 
-		if ( 'curated_posts' == $screen->id ):
+		if ( 'curated_posts' == $screen->id ) :
 			wp_enqueue_style( 'select2', CURATED_POSTS_URL . 'assets/css/select2.min.css', array(), '4.0.3' );
 			wp_enqueue_style( 'curated', CURATED_POSTS_URL . 'assets/css/curated.css', array(), CURATED_POSTS_VERSION );
-	    	wp_enqueue_script( 'jquery-ui-sortable' );
+			wp_enqueue_script( 'jquery-ui-sortable' );
 			wp_enqueue_script( 'select2', CURATED_POSTS_URL . 'assets/js/select2.min.js', array( 'jquery' ), '4.0.3', true );
-	    	wp_enqueue_script( 'curated', CURATED_POSTS_URL . 'assets/js/curated.js', array( 'jquery', 'jquery-ui-sortable', 'select2' ), CURATED_POSTS_VERSION, true );
+			wp_enqueue_script( 'curated', CURATED_POSTS_URL . 'assets/js/curated.js', array( 'jquery', 'jquery-ui-sortable', 'select2' ), CURATED_POSTS_VERSION, true );
 		endif;
 	}
 
@@ -147,50 +149,61 @@ class Curated_Posts {
 	 * Posts meta box
 	 */
 	public static function posts_meta_box( $post, $args ) {
-	    // This is checked on save method
+		// This is checked on save method
 		wp_nonce_field( 'curated_save_data', 'curated_meta_nonce' );
-	    
-	    $curated_posts = get_post_meta( $post->ID, 'curated_posts' );
+
+		$curated_posts = get_post_meta( $post->ID, 'curated_posts' );
 		?>
 
-        <p>
-            <select name="add_curated_posts" id="add_curated_posts" class="js-data-example-ajax">
-                <option value="3620194" selected="selected">Select posts to add to curated list below:</option>
-            </select>        
-        </p>
-		
+		<p>
+			<select name="add_curated_posts" id="js-curated-select" class="js-data-ajax" style="width: 100%">
+				<option value="3620194" selected="selected">Select posts to add to curated list below:</option>
+			</select>
+		</p>
+
 		<table class="widefat curated-posts-table">
 			<thead>
 				<tr>
 					<th style="width:1px;">&nbsp;</th>
-					<th><?php _e( 'Title', 'curated' ); ?></th>
-					<th style="width:20%;"><?php _e( 'Published', 'curated' ); ?></th>
+					<th>
+						<?php _e( 'Title', 'curated' ); ?>
+					</th>
+					<th style="width:20%;">
+						<?php _e( 'Published', 'curated' ); ?>
+					</th>
 					<th style="width:1px;">&nbsp;</th>
 				</tr>
 			</thead>
 			<tbody>
-				<tr class="curated-placeholder"<?php if ( sizeof( $curated_posts ) ): ?> style="display:none;"<?php endif; ?>>
+				<tr class="curated-placeholder" <?php if ( sizeof( $curated_posts ) ) : ?> style="display:none;" <?php endif; ?>>
 					<td colspan="4">
 						<?php _e( 'No posts found.', 'curated' ); ?>
 						<?php _e( 'Use the menu above to add posts to this list.', 'curated' ); ?>
 					</td>
 				</tr>
-				<?php if ( sizeof( $curated_posts ) ): foreach ( $curated_posts as $post_id ): ?>
-					<tr>
-						<td class="icon"><span class="dashicons dashicons-menu post-state-format"></span></td>
-						<td><input type="hidden" name="curated_posts[]" value="<?php echo $post_id; ?>"><?php echo get_the_title( $post_id ); ?></td>
-						<td><?php echo get_the_date( 'j F Y', $post_id ); ?></td>
-						<td><a href="#" class="dashicons dashicons-no-alt curated-delete"></a></td>
-					</tr>
-				<?php endforeach; endif; ?>
+				<?php if ( sizeof( $curated_posts ) ) :
+					foreach ( $curated_posts as $post_id ) : ?>
+						<tr>
+							<td class="icon"><span class="dashicons dashicons-menu post-state-format"></span></td>
+							<td><input type="hidden" name="curated_posts[]" value="<?php echo $post_id; ?>">
+								<?php echo get_the_title( $post_id ); ?>
+							</td>
+							<td>
+								<?php echo get_the_date( 'j F Y', $post_id ); ?>
+							</td>
+							<td><a href="#" class="dashicons dashicons-no-alt curated-delete"></a></td>
+						</tr>
+					<?php endforeach; endif; ?>
 			</tbody>
 		</table>
 		<p style="overflow:hidden">
-			<span class="howto alignleft"><?php _e( 'Drag and drop to reorder posts.', 'curated' ); ?></span>
+			<span class="howto alignleft">
+				<?php _e( 'Drag and drop to reorder posts.', 'curated' ); ?>
+			</span>
 			<span class="credits alignright">
-    			<?php _e( 'Made with <i aria-label="love" class="heart">&#10084;</i> by ', 'curated' ); ?>
+				<?php _e( 'Made with <i aria-label="love" class="heart">&#10084;</i> by ', 'curated' ); ?>
 				<a href="https://twitter.com/banago" target="_blank">@banago</a>
-            </span>			
+			</span>
 		</p>
 		<?php
 	}
@@ -198,23 +211,30 @@ class Curated_Posts {
 	/**
 	 * Shortcode meta box
 	 */
-	public static function usage_meta_box( $post ) {
+	public static function usage_meta_box() {
+		global $post;
+		
 		$post_IDs = get_post_meta( $post->ID, 'curated_posts' );
 		?>
 		<p class="howto">
-			<?php _e( '1. Copy this code and paste it into your post, page or text widget content.', 'curated' ); ?>
+			<?php _e( '1. Copy this <code>shortcode</code> and paste it into your post, page or text widget.', 'curated' ); ?>
 		</p>
 		<p><input type="text" value="[curated_posts <?php echo $post->ID; ?>]" readonly="readonly" class="code"></p>
 
 		<p class="howto">
-			<?php _e( '2. Copy the IDs and paste them into your latest post widget of choice.', 'curated' ); ?>
+			<?php _e( '2. Use the PHP function below to get the cureted posts by <code>ID</code> in a custom loop in your theme.', 'curated' ); ?>
 		</p>
-		<p><input type="text" value="<?php echo implode(',', $post_IDs); ?>" readonly="readonly" class="code"></p>
+		<p><input type="text" value="get_curated_ids( <?php echo $post->ID; ?> )" readonly="readonly" class="code"></p>
 
 		<p class="howto">
-			<?php _e( '3. Use the PHP function below to get the IDs in a custom loop in your theme.', 'curated' ); ?>
+			<?php _e( '3. Use the PHP function below to get the cureted posts by <code>slug</code> in a custom loop in your theme.', 'curated' ); ?>
 		</p>
-		<p><input type="text" value="get_curated_ids(<?php echo $post->ID; ?>)" readonly="readonly" class="code"></p>
+		<p><input type="text" value="get_curated_ids( '<?php echo $post->post_name; ?>' )" readonly="readonly" class="code"></p>
+
+		<p class="howto">
+			<?php _e( '4. Copy the IDs and paste them into your latest post widget of choice.', 'curated' ); ?>
+		</p>
+		<p><input type="text" value="<?php echo implode( ',', $post_IDs ); ?>" readonly="readonly" class="code"></p>
 
 		<?php
 	}
@@ -226,20 +246,27 @@ class Curated_Posts {
 	 * @param  object $post
 	 */
 	public static function save_meta_boxes( $post_id, $post ) {
-		if ( empty( $post_id ) || empty( $post ) ) return;
-		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) return;
-		if ( is_int( wp_is_post_revision( $post ) ) ) return;
-		if ( is_int( wp_is_post_autosave( $post ) ) ) return;
-		if ( empty( $_POST['curated_meta_nonce'] ) || ! wp_verify_nonce( $_POST['curated_meta_nonce'], 'curated_save_data' ) ) return;
-		if ( ! current_user_can( 'edit_post', $post_id  ) ) return;
-		if ( 'curated_posts' != $post->post_type ) return;
+		if ( empty( $post_id ) || empty( $post ) )
+			return;
+		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE )
+			return;
+		if ( is_int( wp_is_post_revision( $post ) ) )
+			return;
+		if ( is_int( wp_is_post_autosave( $post ) ) )
+			return;
+		if ( empty( $_POST['curated_meta_nonce'] ) || ! wp_verify_nonce( $_POST['curated_meta_nonce'], 'curated_save_data' ) )
+			return;
+		if ( ! current_user_can( 'edit_post', $post_id ) )
+			return;
+		if ( 'curated_posts' != $post->post_type )
+			return;
 
 
 		// Delete old
 		delete_post_meta( $post_id, 'curated_posts' );
-        // Save new		
-		if ( isset( $_POST['curated_posts'] ) && is_array ( $_POST['curated_posts'] ) ):
-			foreach ( $_POST['curated_posts'] as $value ):
+		// Save new		
+		if ( isset( $_POST['curated_posts'] ) && is_array( $_POST['curated_posts'] ) ) :
+			foreach ( $_POST['curated_posts'] as $value ) :
 				add_post_meta( $post_id, 'curated_posts', $value );
 			endforeach;
 		endif;
@@ -251,8 +278,8 @@ class Curated_Posts {
 	public static function post_updated_messages( $messages ) {
 		global $typenow, $post;
 
-		if ( 'curated_posts' == $typenow ):
-			for ( $i = 0; $i <= 10; $i++ ):
+		if ( 'curated_posts' == $typenow ) :
+			for ( $i = 0; $i <= 10; $i++ ) :
 				$messages['post'][ $i ] = '<strong>' . __( 'Curated posts saved.', 'curated' ) . '</strong>';
 			endfor;
 		endif;
@@ -265,30 +292,34 @@ class Curated_Posts {
 	 */
 	public static function shortcode( $atts ) {
 		// Get shortcode attributes
-		if ( ! is_array( $atts ) || ! sizeof( $atts ) ) return;
+		if ( ! is_array( $atts ) || ! sizeof( $atts ) )
+			return;
 
 		// Get group ID
 		$id = array_shift( $atts );
 
 		// Get group post ids
-		$post_IDs = get_curated_ids($id);
-		
-		if ( ! $post_IDs || ! is_array( $post_IDs ) || ! sizeof( $post_IDs ) ) return;
+		$post_IDs = get_curated_ids( $id );
 
-		/* Get current group post
-		if ( isset( $_REQUEST['curated_posts'] ) && in_array( $_REQUEST['curated_posts'], $post_IDs ) )
-			$current = $_REQUEST['curated_posts'];
-		else
-			$current = reset( $post_IDs );
-        */
-        
-        // Loop through posts
+		if ( ! $post_IDs || ! is_array( $post_IDs ) || ! sizeof( $post_IDs ) )
+			return;
+
+		/* 
+			Get current group post
+			if ( isset( $_REQUEST['curated_posts'] ) && in_array( $_REQUEST['curated_posts'], $post_IDs ) )
+				$current = $_REQUEST['curated_posts'];
+			else
+				$current = reset( $post_IDs );
+		*/
+
+		// Loop through posts
 		global $post;
 		$content = '<ul class="curated-posts" id="curated-posts-' . $id . '">';
 		$query = new WP_Query( array( 'post__in' => $post_IDs, 'post_type' => 'any', 'orderby' => 'post__in', 'posts_per_page' => -1 ) );
-		while ( $query->have_posts() ): $query->the_post();
+		while ( $query->have_posts() ) :
+			$query->the_post();
 			$content .= '<li class="curated-post" id="curated-post-' . $post->ID . '">';
-			$content .= '<a href="'. get_permalink() .'" title="'. get_the_title() .'">'.  get_the_title() .'</a>';
+			$content .= '<a href="' . get_permalink() . '" title="' . get_the_title() . '">' . get_the_title() . '</a>';
 			$content .= '</li>';
 		endwhile;
 
@@ -310,7 +341,13 @@ class Curated_Posts {
 
 		return $content;
 	}
-	
+
+	public function update_excerpt_label( $translation, $original ) {
+		if ( 'Excerpt' == $original ) {
+			return __( 'Description' );
+		}
+		return $translation;
+	}
 }
 
 /**
@@ -318,8 +355,13 @@ class Curated_Posts {
  *
  * @return array
  */
-function get_curated_ids($id){
-    return get_post_meta($id, 'curated_posts');
+function get_curated_ids( $id_or_slug ) {
+
+	if ( is_numeric( $id_or_slug ) ) {
+		get_page_by_path( $id_or_slug, OBJECT, 'post' )->ID;
+		return get_post_meta( $id, 'curated_posts' );
+	}
+	return get_post_meta( $id, 'curated_posts' );
 }
 
 new Curated_Posts();
