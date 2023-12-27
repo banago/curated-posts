@@ -106,7 +106,7 @@ class Curated_Posts {
 				'exclude_from_search' => true,
 				'hierarchical' => false,
 				'rewrite' => array( 'slug' => 'group' ),
-				'supports' => array( 'title', 'excerpt' ),
+				'supports' => array( 'title', 'slug', 'excerpt' ),
 				'has_archive' => false,
 				'show_in_nav_menus' => false,
 				'show_in_admin_bar' => false,
