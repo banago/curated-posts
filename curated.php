@@ -356,11 +356,10 @@ class Curated_Posts {
  * @return array
  */
 function get_curated_ids( $id_or_slug ) {
-
 	if ( is_numeric( $id_or_slug ) ) {
-		get_page_by_path( $id_or_slug, OBJECT, 'post' )->ID;
 		return get_post_meta( $id, 'curated_posts' );
 	}
+	$id = get_page_by_path( $id_or_slug, OBJECT, 'curated_posts' )->ID;
 	return get_post_meta( $id, 'curated_posts' );
 }
 
