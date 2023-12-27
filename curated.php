@@ -110,7 +110,7 @@ class Curated_Posts {
 				'has_archive' => false,
 				'show_in_nav_menus' => false,
 				'show_in_admin_bar' => false,
-				'menu_icon' => 'dashicons-list-view',
+				'menu_icon' => 'dashicons-text-page',
 			)
 		);
 	}
