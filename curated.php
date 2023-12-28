@@ -4,7 +4,7 @@ Plugin Name: Curated Posts
 Plugin URI: http://wordpress.org/plugins/curated-posts/
 Description: Build lists of curated posts to show on different sections on your website.
 Author: Baki Goxhaj
-Version: 1.0
+Version: 1.1
 Author URI: http://wplancer.com/
 */
 
