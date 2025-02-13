@@ -5,7 +5,7 @@
  * Description:       Build lists of curated posts to show on different sections on your website.
  * Requires at least: 6.2
  * Requires PHP:      7.4
- * Version:           1.1.0
+ * Version:           1.1.1
  * Author:            Baki Goxhaj
  * Author URI:        http://wplancer.com/
  * License:           GPLv2 or later
@@ -56,7 +56,7 @@ class Curated_Posts {
 	 */
 	private function define_constants() {
 		if ( ! defined( 'CURATED_POSTS_VERSION' ) )
-			define( 'CURATED_POSTS_VERSION', '1.1.0' );
+			define( 'CURATED_POSTS_VERSION', '1.1.1' );
 
 		if ( ! defined( 'CURATED_POSTS_URL' ) )
 			define( 'CURATED_POSTS_URL', plugin_dir_url( __FILE__ ) );
