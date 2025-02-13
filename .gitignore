@@ -1,3 +1,10 @@
-dev/
+.idea/
+vendor/
+node_modules/
+/admin/assets/css/dist/*.css
+/admin/assets/css/dist/*.css.map
+/admin/assets/js/*.min.js
+/admin/assets/js/*.js.map
+.wordpress-svn/
 phploy
 phploy.ini

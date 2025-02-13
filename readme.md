@@ -1,9 +1,9 @@
 # Curated Posts 
 **Contributors:** banago  
 **Tags:** curated, editor, option, posts, pages, content  
-**Requires at least:** 4.0  
-**Tested up to:** 4.7.2  
-**Stable tag:** 1.1
+**Requires at least:** 5.0  
+**Tested up to:** 6.7.2  
+**Stable tag:** 1.1.0
 **License:** GPLv2 or later 
 **License URI:** https://www.gnu.org/licenses/gpl-2.0.html  
 
@@ -64,10 +64,6 @@ Automatic updates should work like a charm; as always though, ensure you backup 
 
 ### 2. Posts in the list can be reordered via drag and drop.
 [missing image]
-
-### 3. Copy and paste the shortcode into any post or page.
-[missing image]
-
 
 
 ## Changelog 

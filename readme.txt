@@ -1,10 +1,10 @@
 === Curated Posts ===
 Contributors: banago
 Donate link: https://paypal.me/banago
-Tags: curated, editor, option, posts, pages, content
-Requires at least: 4.0
-Tested up to: 4.7.2
-Stable tag: 1.1
+Tags: curated, editor, posts, pages, content
+Requires at least: 5.0
+Tested up to: 6.7.2
+Stable tag: 1.1.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -27,9 +27,9 @@ Developers can contribute via the [Curated Posts GitHub Repository](https://gith
 == Installation ==
 
 = Minimum Requirements =
-* WordPress 4.0 or greater
-* PHP version 5.2.4 or greater
-* MySQL version 5.0 or greater
+* WordPress 5.0 or greater
+* PHP version 7.4 or greater
+* MySQL version 7.0 or greater
 
 = Automatic Installation =
 
@@ -53,7 +53,6 @@ Automatic updates should work like a charm; as always though, ensure you backup 
 
 1. Manage lists in admin.
 2. Posts in the list can be reordered via drag and drop.
-3. Copy and paste the shortcode into any post or page.
 
 == Changelog ==
 
