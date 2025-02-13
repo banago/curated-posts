@@ -14,18 +14,25 @@ jobs:
     name: New tag
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@main
-      - name: Build
-        run: |
-          composer install --no-dev --prefer-dist --optimize-autoloader --no-scripts
-          yarn install
-          grunt build
+      # Checkout the code
+      - name: Checkout code
+        uses: actions/checkout@v4
+      # Optional: if we add a build step to the plugin, we can run it here.
+        #- name: Build
+        #  run: |
+        #    composer install --no-dev --prefer-dist --optimize-autoloader --no-scripts
+        #    yarn install
+        #    grunt build
+      # Deploy the plugin to WordPress.org
       - name: WordPress Plugin Deploy
-        uses: 10up/action-wordpress-plugin-deploy@stable
+        id: deploy
+        uses: 10up/action-wordpress-plugin-deploy@develop
+        with:
+          generate-zip: true
         env:
-          SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
-          SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }} 
           SLUG: curated-posts # optional, remove if GitHub repo name matches SVN slug, including capitalization
+          SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
+          SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
   build:
     name: Create Release
     runs-on: ubuntu-latest
