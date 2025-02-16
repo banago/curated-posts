@@ -4,7 +4,7 @@ Donate link: https://paypal.me/banago
 Tags: curated, editor, posts, pages, content
 Requires at least: 5.0
 Tested up to: 6.7.2
-Stable tag: 1.1.1
+Stable tag: 2.0.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -55,6 +55,20 @@ Automatic updates should work like a charm; as always though, ensure you backup 
 2. Posts in the list can be reordered via drag and drop.
 
 == Changelog ==
+
+= 2.0.0 =
+* Major rewrite of the admin interface using React
+* Replaced jQuery drag and drop with modern @dnd-kit library
+* Enhanced search interface with WordPress ComboboxControl component
+* Improved accessibility with keyboard navigation and ARIA labels
+* Added loading states and error handling
+* Better REST API integration for post searching
+* Modern UI improvements and styling updates
+
+= 1.1.1 =
+* Rewrite in OOP-style
+* Fix a PHP notice
+* Added Github action to deploy to WP.org
 
 = 1.0 =
 * First release.

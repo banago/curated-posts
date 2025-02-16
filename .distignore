@@ -5,6 +5,7 @@
 /tests
 /coverage
 /node_modules
+/src
 .distignore
 .gitignore
 .gitattributes
@@ -13,8 +14,11 @@
 .eslintignore
 yarn.lock
 package.json
+package-lock.json
 phpmd.xml
 phpunit.xml.dist
 readme.md
 composer.json
 composer.lock
+webpack.config.js
+*.map

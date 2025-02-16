@@ -1,0 +1,27 @@
+{
+  "name": "curated-posts",
+  "version": "2.0.0",
+  "description": "WordPress plugin to create lists of curated posts that you can show anywhere on your site.",
+  "author": "Baki Goxhaj",
+  "license": "GPL-2.0-or-later",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/banago/curated-posts"
+  },
+  "devDependencies": {
+    "@wordpress/scripts": "^30.11.0"
+  },
+  "scripts": {
+    "start": "wp-scripts start",
+    "format": "wp-scripts format",
+    "lint:css": "wp-scripts lint-style",
+    "lint:js": "wp-scripts lint-js",
+    "build": "wp-scripts build"
+  },
+  "dependencies": {
+    "@dnd-kit/core": "^6.3.1",
+    "@dnd-kit/sortable": "^10.0.0",
+    "@dnd-kit/utilities": "^3.2.2",
+    "@wordpress/components": "^29.4.0"
+  }
+}

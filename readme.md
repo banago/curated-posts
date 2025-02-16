@@ -3,7 +3,7 @@
 **Tags:** curated, editor, option, posts, pages, content  
 **Requires at least:** 5.0  
 **Tested up to:** 6.7.2  
-**Stable tag:** 1.1.1
+**Stable tag:** 2.0.0
 **License:** GPLv2 or later 
 **License URI:** https://www.gnu.org/licenses/gpl-2.0.html  
 
@@ -31,9 +31,9 @@ Developers can contribute via the [Curated Posts GitHub Repository](https://gith
 
 
 ### Minimum Requirements 
-* WordPress 4.0 or greater
-* PHP version 5.2.4 or greater
-* MySQL version 5.0 or greater
+* WordPress 6.2 or greater
+* PHP version 7.4 or greater
+* MySQL version 7.0 or greater
 
 
 ### Automatic Installation 
@@ -68,6 +68,19 @@ Automatic updates should work like a charm; as always though, ensure you backup 
 
 ## Changelog 
 
+### 2.0.0
+* Major rewrite of the admin interface using React
+* Replaced jQuery drag and drop with modern @dnd-kit library
+* Enhanced search interface with WordPress ComboboxControl component
+* Improved accessibility with keyboard navigation and ARIA labels
+* Added loading states and error handling
+* Better REST API integration for post searching
+* Modern UI improvements and styling updates
+
+### 1.1.1
+* Rewrite in OOP-style
+* Fix a PHP notice
+* Added Github action to deploy to WP.org
 
 ### 1.0 
 * First release.
